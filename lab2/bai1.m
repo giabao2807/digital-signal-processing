@@ -1,4 +1,4 @@
-function rs = tinh(n)
+function rs = bai1(n)
     mang = -1:1:2;
     biendo = [-1 0 1 2];
     rs=zeros(1,length(n));
