@@ -120,7 +120,7 @@ title('3-points smoothed y4[n] vs. original signal s[n]');
 % ve do thi xep chong y1[n] va y2[n] y3[n] y[4] de test
 figure(6)
 hold on
-plot(n,y1(1:L),'r--',n,y2(1:L),'b-.',n,y3(1:L),'g-.',n,y3(1:L),'y-.');
+plot(n,y1(1:L),'r--',n,y2(1:L),'b-.',n,y3(1:L),'g-.',n,y4(1:L),'m-.');
 xlabel('Chi so thoi gian n');
 ylabel('Bien do');
 legend('y1[n]','y2[n]','y3[n]','y4[n]');
