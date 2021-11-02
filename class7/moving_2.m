@@ -1,6 +1,6 @@
 % chuong trinh lam tron 1 tin hieu de khu nhieu 
 % dung bo loc lay trung binh cong 3 diem (3-points moving-averaging filter)
-% co PTSP: y[n] = 1/3(x[n-1]+x[n]+x[n+1])
+% co PTSP: y[n] = 1/3(x[n]+x[n-1]+x[n-2])
 % problem statement: co tin hieu bi lan voi nhieu x[n], di khoi phuc lai
 % tin hieu goc s[n] (an trong x[n])
 % ky vong KQ: y[n] cang giong s[n] cang tot
@@ -26,16 +26,16 @@ title('Noise d[n] vs. original s[n] vs. noisy signals x[n]');
 
 % cach 1: cai dat he thong bang cach dich thoi gian va tinh
 % TBC cua 3 tin hieu
-x1 = [x(2:L), 0]        % x1[n] = x[n+1]
-x2 = [x]                  % x2[n] = x[n]
-x3 = [0, x(1:L-1)]    % x3[n] = x[n-1]
+x3 = [0,0,x(1:L-2)]        % x3[n] = x[n-2]
+x1 = [x]                  % x1[n] = x[n]
+x2 = [0, x(1:L-1)]    % x2[n] = x[n-1]
 
 subplot(3,2,2)
 % ve do thi x[n-1],x[n],x[n+1]
 plot(n,x1,'r-.',n,x2,'b-.',n,x3,'k-.');
 xlabel('Chi so thoi gian n');
 ylabel('Bien do');
-legend('x[n+1]','x[n]','x[n-1]');
+legend('x[n]','x[n-1]','x[n-2]');
 title('time-shifted signals of x[n]');
 
 y1 = 1/3*(x1+x2+x3)     % lenh cai dat he thong
@@ -76,26 +76,16 @@ y3 = x; %khoi tao gia tri tin hieu y
 frame = 1:N; % tao truc thoi gian tin hieu cua so co chieu dai N
     for k = 1:length(x) % k chay tu 1 den chieu dai cua tin hieu x
         for i = 1:N %i chay tu 1 den N
-            if(k < ceil(N/2))
+            if(k < N)
             %xet gia tri tin hieu cua so temp ben trai tin hieu x
-                if(i < ceil(N/2)-k+1) % i < phan tu giua cua frame
+                if(i < N-k+1 ) % i < phan tu giua cua frame
                     frame(i) = 0;
                 else
-                    frame(i) = x(k+i-ceil(N/2)); % i > phan tu giua cua frame
+                    frame(i) = x(k-N+i); % i > phan tu giua cua frame
                 end
             else
-            %xet gia tri tin hieu cua so ben phai tin hieu frame
-                if(k > length(x) - ceil(N/2) + 1)
-                %i < phan tu giua cua frame
-                    if(i < length(x) + ceil(N/2) - k + 1)
-                        frame(i) = x(k-ceil(N/2) + i);
-                    else
-                        frame(i) = 0; %i > phan tu giua cua frame
-                    end
-                else
                 %xet tin hieu frame chay o giua x.
-                    frame(i) = x(k-ceil(N/2)+i);
-                end
+                    frame(i) = x(k-N+i);
             end
         end
      y3(k) = 1/3*sum(frame);
@@ -125,9 +115,5 @@ xlabel('Chi so thoi gian n');
 ylabel('Bien do');
 legend('y1[n]','y2[n]','y3[n]','y4[n]');
 title('So sanh 4 cach');
-
-
-
-
 
 
