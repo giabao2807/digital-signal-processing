@@ -17,7 +17,7 @@ x = s + d;                      % tin hieu co nhieu x[n]=s[n]+d[n]
 % problem: co tin hieu bi nhieu x[n], di khoi phuc lai tin hieu goc s[n]
 figure(1)                    
 hold on
-subplot(3,2,1)                 
+subplot(3,1,1)                 
 plot(n,d,'r-',n,s,'k--',n,x,'b-.'); % ve do thi d[n],s[n],x[n]
 xlabel('Chi so thoi gian n');
 ylabel('Bien do');
@@ -30,7 +30,7 @@ x3 = [0,0,x(1:L-2)]        % x3[n] = x[n-2]
 x1 = [x]                  % x1[n] = x[n]
 x2 = [0, x(1:L-1)]    % x2[n] = x[n-1]
 
-subplot(3,2,2)
+subplot(3,1,2)
 % ve do thi x[n-1],x[n],x[n+1]
 plot(n,x1,'r-.',n,x2,'b-.',n,x3,'k-.');
 xlabel('Chi so thoi gian n');
@@ -39,7 +39,7 @@ legend('x[n]','x[n-1]','x[n-2]');
 title('time-shifted signals of x[n]');
 
 y1 = 1/3*(x1+x2+x3)     % lenh cai dat he thong
-subplot(3,2,3)
+subplot(3,1,3)
 % ve do thi y1[n] vs. s[n]
 plot(n,y1(1:L),'r-',n,s(1:L),'b-');
 xlabel('Chi so thoi gian n');
@@ -58,15 +58,6 @@ xlabel('Chi so thoi gian n');
 ylabel('Bien do');
 legend('y2[n]','s[n]');
 title('3-points smoothed y2[n] vs. original signal s[n]');
-
-% ve do thi xep chong y1[n] va y2[n] de test
-figure(3)
-hold on
-plot(n,y1,'r-',n,y2(1:L),'b-');
-xlabel('Chi so thoi gian n');
-ylabel('Bien do');
-legend('y1[n]','y2[n]');
-title('cach1  vs. cach2');
 
 
 % cach 3: dung vong lap (hieu n l? mot chi so mau nao do)
@@ -90,7 +81,7 @@ frame = 1:N; % tao truc thoi gian tin hieu cua so co chieu dai N
         end
      y3(k) = 1/3*sum(frame);
     end
-figure(4)
+figure(3)
 plot(n,y3(1:L),'r-',n,s(1:L),'b-');
 xlabel('Chi so thoi gian n');
 ylabel('Bien do');
@@ -100,7 +91,7 @@ title('3-points smoothed y3[n] vs. original signal s[n]');
 
 % cach 4: dung filter
 y4 = filter(h,1,x1);
-figure(5)
+figure(4)
 plot(n,y4(1:L),'r-',n,s(1:L),'b-');
 xlabel('Chi so thoi gian n');
 ylabel('Bien do');
@@ -108,7 +99,7 @@ legend('y4[n]','s[n]');
 title('3-points smoothed y4[n] vs. original signal s[n]');
 
 % ve do thi xep chong y1[n] va y2[n] y3[n] y[4] de test
-figure(6)
+figure(5)
 hold on
 plot(n,y1(1:L),'r--',n,y2(1:L),'b-.',n,y3(1:L),'g-.',n,y4(1:L),'m-.');
 xlabel('Chi so thoi gian n');
