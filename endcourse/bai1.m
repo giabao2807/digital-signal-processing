@@ -7,7 +7,8 @@ files = {'01MDA', '02FVA', '03MAB', '06FTB'};
 name = char(strcat(filePath, files(looping), '.wav'));
 
 
-    [x,fs]=audioread(name);
+    [x,t1,fs]=normalizedAmplitude(name);
+    
 
     time_duration=0.03; %do dai moi khung 
     lag = 0.01; %do tre moi khung
@@ -28,11 +29,7 @@ name = char(strcat(filePath, files(looping), '.wav'));
     ZCRarr=zeros(1,nFrame);
     STEarr=zeros(1,nFrame);
     VUframe = zeros(1,nFrame);
-    
-    %normalized
-    max_value = max(abs(x)); %tim bien do lon nhat cua tin hieu duoc doc
-    x= x/max_value; %dua bien do cua tin hieu ve vecto co tin hieu cao nhat 
-    
+   
     
     %chia frame
     for frame_index=1:nFrame
@@ -78,24 +75,23 @@ name = char(strcat(filePath, files(looping), '.wav'));
      
      ZCRarr= ZCRarr./max(ZCRarr);
      STEarr=STEarr./max(STEarr);
+     x=x./max(x);
     
      
      
     figure;
-    subplot(3,1,1);
-
-    plot(ZCRarr);
+    subplot(2,1,1); plot(t,STEarr,'g','LineWidth',2);
+    hold on;
+    plot(t,ZCRarr,'r','LineWidth',2);
+    hold on;
     title('Zero-crossing rate (ZCR)');
     xlabel('Time axis');
-    ylabel('ZCR');
+    legend('Short-time energy', 'Zero-Crossing Rate');
 
-    subplot(3,1,2);
-    plot(STEarr);
+    subplot(2,1,2);plot(t1,x);
+    hold on;
     title('Short-time energy (STE)');
     xlabel('Time axis');
     ylabel('STE');
-    
-    subplot(3,1,3);
-    plot(x);
 end
 

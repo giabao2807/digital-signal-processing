@@ -6,8 +6,7 @@ filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuye
 files = {'01MDA', '02FVA', '03MAB', '06FTB'};
 name = char(strcat(filePath, files(looping), '.wav'));
 
-
-    [x,fs]=audioread(name);
+    [x,t1,fs]=normalizedAmplitude(name);
 
     N=32768;
     time_duration=0.03; %do dai moi khung 
@@ -53,7 +52,20 @@ name = char(strcat(filePath, files(looping), '.wav'));
         dftylog=10*log10(dfty);
         dftylog1 = 10*log10(dfty1);
         
+        xxN=zeros(1,n_max-n_min+1);
+        for n=n_min:n_max
+        xxN(n+1)=dftylog1(n);
+        end
         
+        framepeak=zeros(1,n_max-n_min+1);
+        %xac dinh vi tri max trong frame thoa nam tu mau n_min->n_max
+        j=1;
+        for index=2:length(xxN)-1
+            if xxN(index-1)<xxN(index) && xxN(index)>xxN(index+1)
+                framepeak(j)=index;
+                j=j+1;
+            end
+        end
     end
      
     figure;
