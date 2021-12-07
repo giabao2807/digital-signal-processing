@@ -34,7 +34,7 @@ name = char(strcat(filePath, files(looping), '.wav'));
     
     
     %chia frame
-    for frame_index=1:nFrame
+   for frame_index=1:nFrame
         a=(frame_index-1)*nSampleLag+1;
         b=(frame_index-1)*nSampleLag+nSampleFrame+1;
         if b <= lenX
@@ -53,12 +53,14 @@ name = char(strcat(filePath, files(looping), '.wav'));
         dftylog1 = 10*log10(dfty1);
         
         xxN=zeros(1,n_max-n_min+1);
+        dem=1;
         for n=n_min:n_max
-        xxN(n+1)=dftylog1(n);
+        xxN(dem)=dfty1(n);
+        dem=dem+1;
         end
         
         framepeak=zeros(1,n_max-n_min+1);
-        %xac dinh vi tri max trong frame thoa nam tu mau n_min->n_max
+        %xac dinh vi tri h?i trong frame thoa nam tu mau n_min->n_max
         j=1;
         for index=2:length(xxN)-1
             if xxN(index-1)<xxN(index) && xxN(index)>xxN(index+1)
@@ -66,6 +68,15 @@ name = char(strcat(filePath, files(looping), '.wav'));
                 j=j+1;
             end
         end
+        
+        %kho?ng c?ch gi?a c?c h?i
+       F0frame = zeros(1:3);
+       for j=1:3
+           F0frame = xxN(framepeak(j+1))/framepeak(j+1)-xxN(framepeak(j))/framepeak(j);
+       end
+       
+       %T0 chu k?
+       F0_frame(frame_index) = sum(F0frame)/3;
     end
      
     figure;
@@ -83,6 +94,6 @@ name = char(strcat(filePath, files(looping), '.wav'));
     ylabel('STE');
     
     subplot(3,1,3);
-    plot(x);
+    stem(F0_frame);
 end
 
