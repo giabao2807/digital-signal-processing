@@ -9,7 +9,7 @@ nSamples=100;% number of signal samples for plotting
 
 t=0:1/Fs:duration;
 y=3*sin(2*pi*F1*t)+2*sin(2*pi*F2*t)+1*sin(2*pi*F3*t); % signal of 2 frequencies
-sound(y,Fs);
+%sound(y,Fs);
 
 figure(1)
 
