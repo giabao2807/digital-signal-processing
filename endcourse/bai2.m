@@ -8,7 +8,7 @@ name = char(strcat(filePath, files(looping), '.wav'));
 
     [x,t1,fs]=normalizedAmplitude(name);
 
-    N=2000;
+    N=2048;
     %gioi han tan so F0 trong khoang 70hz->450hz->giam do phuc tap
     
     time_duration=0.03; %do dai moi khung 
@@ -20,26 +20,32 @@ name = char(strcat(filePath, files(looping), '.wav'));
      n_max = floor(fs/70);
 
     lenX = length(x); %do dai tin hieu vao theo mau
-    nSampleFrame = round(time_duration*fs);%do dai 1 frame tinh theo mau
+    nSampleFrame = time_duration*fs;%do dai 1 frame tinh theo mau
+    nSampleLag = lag*fs; %do dai do dich cua frame theo mau
     h=hamming(nSampleFrame) ;
-    nSampleLag = round(lag*fs); %do dai do dich cua frame theo mau
-
-     
-    %so_frame chia duoc
-    nFrame= int32(lenX-nSampleFrame)/nSampleLag+1;
-    t=(1:nFrame)*fs/nSampleLag;
+    
+    nFrame= int32((lenX-nSampleLag)/(nSampleFrame-nSampleLag))+1;%so frame chia duoc
+    t=(1:nFrame)*2*fs/nSampleLag; 
+    
+    
     frame_F0=zeros(1,nFrame);
     
      %chia frame
     for frame_index=1:nFrame
-        a=(frame_index-1)*nSampleLag+1;
-        b=(frame_index-1)*nSampleLag+nSampleFrame;
-        if b <= lenX
+        a=(frame_index-1)*(nSampleFrame-nSampleLag)+1;
+        if(frame_index ==1)
+             b=(frame_index)*nSampleFrame;
+        else
+            b=(frame_index)*nSampleFrame - (frame_index-1)*nSampleLag;
+        end
+        if b < lenX
             frame= x(a:b); %xac dinh 1 frame
         else 
             frame= x(a:lenX);
             frame(lenX:b)=0;
         end
+     
+        
         %Ham tu tuong quan voi do tre n_min->n_max
         xxN=zeros(1,n_max-n_min+1);
         for n=n_min:n_max
@@ -65,13 +71,40 @@ name = char(strcat(filePath, files(looping), '.wav'));
         
         %xac dinh huu thanh vo thanh v? F0
         if xxN(j)/max(x)> 0.35 %thong ke tim nguong 
-              frame=h.*frame;
-              dfty= abs(fft(frame,N));
-              dfty1= dfty(1:length(dfty)/2 + 1);
- 
-              [value,peak] = findpeaks(dfty1); 
-              frame_F0(frame_index)= (peak(1)+peak(2))/2;
-            %frame_F0(frame_index)=fs/j;
+             frame=h.*frame;
+             dfty= abs(fft(frame,N));
+             dfty1= dfty(1:length(dfty)/2 + 1);
+             dfty1(2:end-1)=2*dfty1(2:end-1);
+            
+            tmp_k=1;
+            harmonics=[];
+            for index=2:1000
+                 if dfty1(index-1)>dfty1(index) && dfty1(index)<dfty1(index+1)  
+                        if index-tmp_k > 80 && index-tmp_k <450
+                             tmp_k=index;
+                             harmonics=[harmonics index];
+                             if length(harmonics) ==5 
+                                 break;
+                             end
+                        else
+                            continue;
+                        end
+                end
+            end
+            
+            % find F0[] and do something to find F0
+            F0=[harmonics(1)]
+            tmp_index=1;
+            for i= 2:length(harmonics)
+                F0new = harmonics(i)-harmonics(i-1);
+                if F0new - F0(tmp_index) >20
+                    continue;
+                end
+                F0 =[F0 F0new];
+                tmp_index=tmp_index+1;
+            end
+             
+            frame_F0(frame_index)=sum(F0)/length(F0);
         else
            frame_F0(frame_index)=0;
         end
@@ -93,7 +126,7 @@ name = char(strcat(filePath, files(looping), '.wav'));
     ylabel('F0');
     
      subplot(3,1,3);
-    plot(x);
+    plot(dfty1);
     title('F0');
     xlabel('Time axis');
     ylabel('F0');
