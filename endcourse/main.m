@@ -2,7 +2,7 @@ close all;
 for looping =1:4
    % clear x frames;
    clearvars -except looping;
-clc;
+   clc;
 % filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/';
 % files = { '01MDA','02FVA', '03MAB', '06FTB'};
 
@@ -117,7 +117,7 @@ end;
         %STE computing
         STEarr(frame_index)=sum(frame.^2);   
     end
-         
+        
   
      %ZCRarr= (ZCRarr - min(ZCRarr))/(max(ZCRarr) - min(ZCRarr));
      MAarr= MAarr./max(MAarr);
@@ -148,14 +148,14 @@ end;
             
             tmp_k=1;
             harmonics=[];
-            for index=100:1000
+            for index=100:2000
                  if dfty1(index-1)<dfty1(index) && dfty1(index)>dfty1(index+1)  
                         if index-tmp_k > Fslow && index-tmp_k <Fshigh
                              tmp_k=index;
                              harmonics=[harmonics index];
-                             if length(harmonics) ==5 
-                                 break;
-                             end
+                              if length(harmonics) ==5 
+                                  break;
+                              end
                         else
                             continue;
                         end
