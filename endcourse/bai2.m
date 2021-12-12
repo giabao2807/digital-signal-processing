@@ -2,11 +2,23 @@ for looping =1:4
    % clear x frames;
    clearvars -except looping;
 clc;
-filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/';
-files = {'01MDA', '02FVA', '03MAB', '06FTB'};
+filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuKiemThu/';
+files = { '45MDV','42FQT', '44MTT','30FTN'};
 name = char(strcat(filePath, files(looping), '.wav'));
 Tste= 0.21;
 Tma= 0.185;
+
+Fslow=75;
+Fshigh=450;
+
+
+
+    if (looping==2 || looping==4)
+           Fslow=200;
+    end
+
+
+
 
     [x,t1,fs]=normalizedAmplitude(name);
 
@@ -28,12 +40,6 @@ Tma= 0.185;
     
     nFrame= int32((lenX-nSampleLag)/(nSampleFrame-nSampleLag))+1;%so frame chia duoc
     t=(1:nFrame)*2*fs/nSampleLag; 
-    
-    
- %     ZCRarr=zeros(1,nFrame);
-    STEarr=zeros(1,nFrame);
-    MAarr= zeros(1,nFrame);
-    VUframe = zeros(1,nFrame);
     frame_F0=zeros(1,nFrame);
    
     
@@ -41,9 +47,9 @@ Tma= 0.185;
     for frame_index=1:nFrame
         a=(frame_index-1)*(nSampleFrame-nSampleLag)+1;
         if(frame_index ==1)
-             b=(frame_index)*nSampleFrame+1;
+             b=(frame_index)*nSampleFrame;
         else
-            b=(frame_index)*nSampleFrame - (frame_index-1)*nSampleLag +1;
+            b=(frame_index)*nSampleFrame - (frame_index-1)*nSampleLag ;
         end
         if b < lenX
             frame= x(a:b); %xac dinh 1 frame
@@ -52,44 +58,30 @@ Tma= 0.185;
             frame(lenX:b)=0;
         end
         
-%         ZCR computing
-%         zcr=0;
-%         for  i = 2:nSampleFrame
-%             if frame(i)*frame(i-1) <0
-%                 zcr=zcr+1;
-%             end
-%         end
-%         ZCRarr(frame_index)=zcr;
-       
-        %MA computing
-        MAarr(frame_index)= sum(abs(frame));
-        
-        %STE computing
-        STEarr(frame_index)=sum(frame.^2);   
-    end
-         
-  
-     %ZCRarr= (ZCRarr - min(ZCRarr))/(max(ZCRarr) - min(ZCRarr));
-     MAarr= MAarr./max(MAarr);
-     STEarr=STEarr./max(STEarr);
-     
-        
-    %define Speech-Silence
-    for frame_index=1:nFrame    
-       if MAarr(frame_index) >Tma ||  STEarr(frame_index) >Tste
-             a=(frame_index-1)*(nSampleFrame-nSampleLag)+1;
-             if(frame_index ==1)
-                b=(frame_index)*nSampleFrame;
-             else
-                 b=(frame_index)*nSampleFrame - (frame_index-1)*nSampleLag;
-             end
-             if b < lenX
-                    frame= x(a:b); %xac dinh 1 frame
-             else 
-                    frame= x(a:lenX);
-                    frame(lenX:b)=0;
+        xxN=zeros(1,n_max-n_min+1);
+        for n=n_min:n_max
+        s =0; 
+            for j=1:nSampleFrame
+            B=0; %vitri khong xac dinh se cho bang 0
+            if 1<=j+n && j+n<=nSampleFrame
+                B= frame(j+n);
             end
-             frame=h.*frame;
+            s=s+frame(j)*B;
+            end
+        xxN(n+1)=s;
+        end
+        
+       
+        %xac dinh vi tri max trong frame thoa nam tu mau n_min->n_max
+        j=1;
+        for index=2:length(xxN)-1
+            if xxN(index-1)<xxN(index) && xxN(index)>xxN(index+1) && xxN(j)<xxN(index)
+                j=index;
+            end
+        end
+
+         if xxN(j)/max(x)> 0.35
+              frame=h.*frame;
              dfty= abs(fft(frame,N));
              dfty1= dfty(1:length(dfty)/2 + 1);
             
@@ -99,7 +91,7 @@ Tma= 0.185;
             harmonics=[];
             for index=100:1000
                  if dfty1(index-1)<dfty1(index) && dfty1(index)>dfty1(index+1)  
-                        if index-tmp_k > 200 && index-tmp_k <450
+                        if index-tmp_k > Fslow && index-tmp_k <Fshigh
                              tmp_k=index;
                              harmonics=[harmonics index];
                              if length(harmonics) ==5 
@@ -111,28 +103,21 @@ Tma= 0.185;
                 end
             end
             
-    
-            
             % find F0[] and do something to find F0
             F0=[harmonics(1)];
-            tmp_index=1;
             for i= 2:length(harmonics)
                 F0new = harmonics(i)-harmonics(i-1);
-                if F0new - F0(tmp_index) >20
-                    continue;
-                end
                 F0 =[F0 F0new];
-                tmp_index=tmp_index+1;
             end
              
             frame_F0(frame_index)=sum(F0)/length(F0);
-       else
-            frame_F0(frame_index)=0;
-       end
-    end
+         else
+             frame_F0(frame_index)=0;
+         end
+         
         
-  
-    
+    end
+   
     frame_F0=medfilt(frame_F0,5); 
     [F0mean,F0std]=FindF0mean_F0std(frame_F0);
     figure;

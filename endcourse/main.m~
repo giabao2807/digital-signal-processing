@@ -245,21 +245,21 @@ end;
         speech1 = abs(fft(h.*x(1.2*fs:1.23*fs-1),4068));
         speech1 = speech1(1:int32(length(speech1)/2)+1);
         figure('Name', 'Silence and Speech ')
-        subplot(3,1,1);
+        subplot(2,1,1);
         plot(si(1:2000));
-        title('Silence with N=32068'); xlabel('Frequence');
+        title('Silence with'); xlabel('Frequence');
         ylabel('10log');
         
         hold on;
-        subplot(3,1,2);
+        subplot(2,1,2);
         plot(speech(1:2000));
-        title('Speech with N=32068'); xlabel('Frequence');
+        title('Speech 32068'); xlabel('Frequence');
         ylabel('10log');
         
         hold on;
         subplot(3,1,3);
         plot(speech1(1:2000));
-        title('Speech with N=4068'); xlabel('Frequence');
+        title('Speech 4068'); xlabel('Frequence');
         ylabel('10log');
     end
     
