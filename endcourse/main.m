@@ -7,13 +7,14 @@ for looping =1:4
 % files = { '01MDA','02FVA', '03MAB', '06FTB'};
 
 filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuKiemThu/';
-files = { '45MDV','42FQT', '44MTT','30FTN'};
+files = { '45MDV','42FQT','30FTN', '44MTT'};
 
 
 N=32068;
 name = char(strcat(filePath, files(looping), '.wav'));
 Tste= 0.21;
 Tma= 0.185;
+Tau = 0.37;
 
 %gioi han tan so F0 trong khoang 70hz->450hz->giam do phuc tap
 Fslow=70;
@@ -51,10 +52,10 @@ if (looping==1)
 elseif (looping==2)
     standardVals=FQT;
     Fslow=200;
-elseif (looping==3)
+elseif (looping==4)
     standardVals=MTT;
     Fslow=100;
-elseif (looping==4)
+elseif (looping==3)
     standardVals=FTN;
     Fslow=200;
 end;
@@ -85,7 +86,7 @@ end;
     VUframe = zeros(1,nFrame);
     VUindex =[0 ];
     frame_F0=zeros(1,nFrame);
-   
+    AUarr =zeros(1,nFrame);
     
     %chia frame
     for frame_index=1:nFrame
@@ -110,6 +111,28 @@ end;
 %             end
 %         end
 %         ZCRarr(frame_index)=zcr;
+
+        %Autocorrect computing
+        xxN=zeros(1,n_max-n_min+1);
+        for n=n_min:n_max
+        s =0; 
+            for j=1:nSampleFrame
+            B=0; %vitri khong xac dinh se cho bang 0
+            if 1<=j+n && j+n<=nSampleFrame
+                B= frame(j+n);
+            end
+            s=s+frame(j)*B;
+            end
+        xxN(n+1)=s;
+        end
+        %xac dinh vi tri max trong frame thoa nam tu mau n_min->n_max
+        j=1;
+        for index=2:length(xxN)-1
+            if xxN(index-1)<xxN(index) && xxN(index)>xxN(index+1) && xxN(j)<xxN(index)
+                j=index;
+            end
+        end
+        AUarr(frame_index)= xxN(j)/max(x);
        
         %MA computing
         MAarr(frame_index)= sum(abs(frame));
@@ -126,7 +149,7 @@ end;
      
     %define Speech-Silence 01
     for frame_index=1:nFrame
-       if MAarr(frame_index) >Tma ||  STEarr(frame_index) >Tste
+       if MAarr(frame_index) >Tma || STEarr(frame_index) >Tste  || AUarr(frame_index)>Tau
            VUframe(frame_index)=1;
              a=(frame_index-1)*(nSampleFrame-nSampleLag)+1;
              if(frame_index ==1)
@@ -236,7 +259,7 @@ end;
     ylabel('F0');
     
     
-    if looping == 3
+    if looping == 4
         si = abs(fft(h.*x(0.5*fs:0.53*fs-1),N));
         si = si(1:int32(length(si)/2) +1);
         speech = abs(fft(h.*x(1.2*fs:1.23*fs-1),N));
@@ -264,7 +287,4 @@ end;
     end
     
 end
-
-%figure('Name', 'Voice and Unvoice ')
-%subplot(2,1,3);
 
