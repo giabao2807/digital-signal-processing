@@ -44,6 +44,7 @@ tmp=2;
     %ZCRarr=zeros(1,nFrame);
     STEarr=zeros(1,nFrame);
     MAarr= zeros(1,nFrame);
+    AUarr =zeros(1,nFrame);
     
     %chia frame
     for frame_index=1:nFrame
@@ -74,7 +75,29 @@ tmp=2;
         MAarr(frame_index)= sum(abs(frame));
         
         %STE computing
-        STEarr(frame_index)=sum(frame.^2);   
+        STEarr(frame_index)=sum(frame.^2); 
+        
+                %Autocorrect computing
+        xxN=zeros(1,n_max-n_min+1);
+        for n=n_min:n_max
+        s =0; 
+            for j=1:nSampleFrame
+            B=0; %vitri khong xac dinh se cho bang 0
+            if 1<=j+n && j+n<=nSampleFrame
+                B= frame(j+n);
+            end
+            s=s+frame(j)*B;
+            end
+        xxN(n+1)=s;
+        end
+        %xac dinh vi tri max trong frame thoa nam tu mau n_min->n_max
+        j=1;
+        for index=2:length(xxN)-1
+            if xxN(index-1)<xxN(index) && xxN(index)>xxN(index+1) && xxN(j)<xxN(index)
+                j=index;
+            end
+        end
+        AUarr(frame_index)= xxN(j)/max(x);
     end
     
          
@@ -93,43 +116,43 @@ stdMA= std(MAtk)
 
 %MDA 
 %v       ste                                     MA
-%        mean:0.3399                    mean:0.4310
-%        std:0.3784                       std:0.3699
+%        mean:0.3399                    mean:0.210
+%        std:0.3784                       std:0.1399
 
-%uv    mean:0.1762                    mean:0.3564
-%       std:0.2                               std:0.2214
-%=>  ste ~=0.207                      MA= 0.3   
+%uv    mean:0.1762                    mean:0.2464
+%       std:0.2                               std:0.1914
+%=>  ste ~=0.207                      MA= 0.185   
   
 
 %MBA 
 %uv       ste                                     MA
-%        mean:0.2303                   mean:0.4733
-%        std:0.2034                          std:0.2096
+%        mean:0.2303                   mean:0.2733
+%        std:0.2034                          std:0.1096
 
-%v    mean:0.3048                   mean:0.4889
-%       std:0.23171                         std:0.2951 
-%=> ste~=0.215                     MA=0.43
+%v    mean:0.3048                   mean:0.1889
+%       std:0.23171                         std:0.1951 
+%=> ste~=0.215                     MA=0.181
 
 
 %FTB
 %uv       ste                                     MA
-%        mean:0.2591                    mean:0.4526
+%        mean:0.2591                    mean:0.1526
 %        std:0.1824                         std:0.1730
 
-%v    mean:0.3179                     mean:0.5275
-%       std:0.3537                         std:0.3465      
-%=>  ste ~=0.238                 MA= 0.3628
+%v    mean:0.3179                     mean:0.2275
+%       std:0.3537                         std:0.1465      
+%=>  ste ~=0.238                 MA= 0.2033
 
 
 %FVA
 %v       ste                                     MA
-%        mean:0.4116                mean:0.5179
-%        std:0.3696                         std:0.3709
+%        mean:0.4116                mean:0.2179
+%        std:0.3696                         std:0.1709
 
-%uv    mean:0.3705                    mean:0.5730
+%uv    mean:0.3705                    mean:0.2730
 %       std:0.2100                        std:0.2679    
-%=>  ste ~=0.211                  MA= 0.534
+%=>  ste ~=0.211                  MA= 0.183
 
-%====>ste=0.2175           MA=0.37
+%====>ste=0.2175           MA=0.185
 
 

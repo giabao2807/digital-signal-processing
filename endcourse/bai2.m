@@ -18,8 +18,6 @@ Fshigh=450;
     end
 
 
-
-
     [x,t1,fs]=normalizedAmplitude(name);
 
     N=32068;
@@ -81,7 +79,7 @@ Fshigh=450;
         end
 
          if xxN(j)/max(x)> 0.35
-              frame=h.*frame;
+             frame=h.*frame;
              dfty= abs(fft(frame,N));
              dfty1= dfty(1:length(dfty)/2 + 1);
             
@@ -91,7 +89,7 @@ Fshigh=450;
             harmonics=[];
             for index=100:1000
                  if dfty1(index-1)<dfty1(index) && dfty1(index)>dfty1(index+1)  
-                        if index-tmp_k > Fslow && index-tmp_k <Fshigh
+                        if index-tmp_k > Fslow && index-tmp_k <Fshigh  
                              tmp_k=index;
                              harmonics=[harmonics index];
                              if length(harmonics) ==5 

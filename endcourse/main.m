@@ -151,6 +151,7 @@ end;
     for frame_index=1:nFrame
        if MAarr(frame_index) >Tma || STEarr(frame_index) >Tste  || AUarr(frame_index)>Tau
            VUframe(frame_index)=1;
+          
              a=(frame_index-1)*(nSampleFrame-nSampleLag)+1;
              if(frame_index ==1)
                 b=(frame_index)*nSampleFrame;
@@ -171,9 +172,9 @@ end;
             
             tmp_k=1;
             harmonics=[];
-            for index=100:2000
+            for index=2:2000
                  if dfty1(index-1)<dfty1(index) && dfty1(index)>dfty1(index+1)  
-                        if index-tmp_k > Fslow && index-tmp_k <Fshigh
+                        if (index-tmp_k)*fs/N > Fslow && (index-tmp_k)*fs/N <Fshigh
                              tmp_k=index;
                              harmonics=[harmonics index];
                               if length(harmonics) ==5 
@@ -191,7 +192,7 @@ end;
             F0=[harmonics(1)];
             tmp_index=1;
             for i= 2:length(harmonics)
-                F0new = harmonics(i)-harmonics(i-1);
+                F0new = (harmonics(i)-harmonics(i-1))*fs/N;
                 if F0new - F0(tmp_index) >20
                     continue;
                 end
@@ -199,7 +200,7 @@ end;
                 tmp_index=tmp_index+1;
             end
       
-            frame_F0(frame_index)=sum(F0)/length(F0);
+            frame_F0(frame_index)=sum(F0)/length(F0)*fs/N;
        else
             frame_F0(frame_index)=0;
        end
@@ -222,7 +223,7 @@ end;
         
    
       
-     figure('Name',char(files(looping)));
+    figure('Name',char(files(looping)));
     subplot(3,1,1); plot(t,STEarr,'g','LineWidth',2);
     hold on;
     plot(t,MAarr,'r','LineWidth',2);
@@ -264,24 +265,26 @@ end;
         si = si(1:int32(length(si)/2) +1);
         speech = abs(fft(h.*x(1.2*fs:1.23*fs-1),N));
         speech = speech(1:int32(length(speech)/2)+1);
+        frequence1 = (1:2000).*fs/N;
         
         speech1 = abs(fft(h.*x(1.2*fs:1.23*fs-1),4068));
         speech1 = speech1(1:int32(length(speech1)/2)+1);
+        frequence2 = (1:500).*fs/4068;
         figure('Name', 'Silence and Speech ')
         subplot(3,1,1);
-        plot(si(1:2000));
+        plot(frequence1,si(1:2000));
         title('Silence with N=32068'); xlabel('Frequence');
         ylabel('10log');
         
         hold on;
         subplot(3,1,2);
-        plot(speech(1:2000));
+        plot(frequence1,speech(1:2000));
         title('Speech with N=32068'); xlabel('Frequence');
         ylabel('10log');
         
         hold on;
         subplot(3,1,3);
-        plot(speech1(1:2000));
+        plot(frequence2,speech1(1:500));
         title('Speech with N=4068'); xlabel('Frequence');
         ylabel('10log');
     end
