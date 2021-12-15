@@ -1,10 +1,16 @@
 function [meanv,stdv]= readlab()
 clear;
 clc;
-[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/XLTinHieu/mid-term1/Tinhieuhuanluyen/phone_F1.wav');
+%[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/XLTinHieu/mid-term1/Tinhieuhuanluyen/phone_F1.wav');
 %[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/XLTinHieu/mid-term1/Tinhieuhuanluyen/phone_M1.wav');
 %[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/XLTinHieu/mid-term1/Tinhieuhuanluyen/studio_F1.wav');
 %[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/XLTinHieu/mid-term1/Tinhieuhuanluyen/studio_M1.wav');
+
+
+[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/06FTB');
+%[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/02FVA');
+%[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/03MAB');
+%[data,t, fs] = normalizedAmplitude('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/01MDA');
 
 
 
@@ -12,7 +18,14 @@ clc;
 %sM1 = [0.87, 0.94, 1.26, 1.33, 1.59, 1.66, 1.78, 1.82, 2.06, 2.73];
 %sF1 = [0.68, 0.70, 1.10, 1.13, 1.22, 1.27, 1.65, 1.70, 1.76, 1.79, 1.86, 1.92, 2.15, 2.86];
 %pM1 = [0.46, 1.39, 1.50, 1.69, 1.79, 2.78, 2.86, 2.93, 3.10, 3.29, 3.45, 3.52];
-pF1 = [0.53, 1.14, 1.21, 1.35, 1.45, 1.60, 1.83, 2.20, 2.28, 2.35, 2.40, 2.52, 2.66, 2.73, 2.75];
+%pF1 = [0.53, 1.14, 1.21, 1.35, 1.45, 1.60, 1.83, 2.20, 2.28, 2.35, 2.40, 2.52, 2.66, 2.73, 2.75];
+
+
+%MDA = [0,1.52,1.92,3.91,4.35,6.18,6.6,8.67,9.14,10.94,11.33,12.75];
+pF1=[0.00,0.83,1.37,2.09,2.60,3.57,4.00,4.76,5.33,6.18,6.68,7.18];
+%MDA = [0,0.45,0.81,1.53,1.85,2.69,2.86,3.78,4.15,4.84,5.14,5.58];
+%MAB =[0,1.03,1.42,2.46,2.80,4.21,4.52,6.81,7.14,8.22,8.50,9.37];
+
 
 tmp=2;
 tk=[];
@@ -97,6 +110,28 @@ end
 
 %==================> nguong: 0.48
 
+
+
+
+%01MDA
+%meanv 0.625 stdv 0.1485 =>  ~0.4865
+%meanuv 0.1406 stduv 0.1004 => ~0.241     ====> 0.35
+
+
+%03MAB
+%meanv 0.6046 stdv 0.1181 =====> ~0.5375        ===> 0.4
+%meanuv 0.255 stduv 0.135 =>0.39
+
+%02FVA
+%meanv 0.2268 stdv 0.1079 =>~0.4015 ====> 0.4237
+%meanuv 0.3607 stduv 0.0348 => 0.3359
+
+%06FTB
+%meanv  0.1839 stdv  0.2508  =>0.4347  =====> ~0.4009 
+%meanuv 0.6715 stduv 0.1044  => 0.5671
+
+
+%======> 0.35
 
 
 

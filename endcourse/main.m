@@ -1,6 +1,5 @@
 close all;
 for looping =1:4
-   % clear x frames;
    clearvars -except looping;
    clc;
 % filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/';
