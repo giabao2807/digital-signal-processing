@@ -6,7 +6,7 @@ for looping =1:8
 % files = { '01MDA','02FVA', '03MAB', '06FTB'};
 
 filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/TH1/TinHieuHuanLuyen/';
-files = { '01MDA','02FVA', '03MAB', '06FTB','45MDV','42FQT','30FTN', '44MTT'};
+files = { '01MDA','02FVA', '03MAB', '06FTB','45MDV','42FQT','44MTT','30FTN'};
 
 
 N=32068;
@@ -36,13 +36,9 @@ Fshigh=450;
 
 % do something for draw line in result matlab
 
-if (looping==1)
+if (mod(looping,2)== 1 )
     Fslow=100;
-elseif (looping==2)
-    Fslow=200;
-elseif (looping==4)
-    Fslow=100;
-elseif (looping==3)
+elseif (mod(looping,2)==0)
     Fslow=200;
 end;
 
