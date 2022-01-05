@@ -109,10 +109,10 @@ Fshigh=450;
                     frame(lenX:b)=0;
             end
              frame=h.*frame;
-             dfty= real(fft(frame,1024));
+             dfty= abs(fft(frame,N));
              dfty1= dfty(1:length(dfty)/2 + 1);
-             logdf = log(abs(dfty1));
-             iffty = real(ifft(logdf));
+             logdf = log(dfty1);
+             ifft = 1/N *;
             
 %       
 %             
@@ -177,7 +177,7 @@ Fshigh=450;
     ylabel('normailized Amplitude');
 
     subplot(2,1,2);
-    spectrogram(x,3*10^(-3)*fs,1*10^(-3)*fs,N,fs,'yaxis');
+    spectrogram(x,5*10^(-3)*fs,2*10^(-3)*fs,N,fs,'yaxis');
     hold on;
     title('Spectrogram signal');
     xlabel('Time axis');
@@ -189,11 +189,11 @@ Fshigh=450;
        figure('Name','Ket qua trung gian');
        subplot(4,1,1); plot(frame);
        hold on;
-       subplot(4,1,2); plot(dfty);
+       subplot(4,1,2); plot(dfty1);
        hold on;
        subplot(4,1,3); plot(logdf);
        hold on;
-       subplot(4,1,4); plot(iffty);
+       subplot(4,1,4); plot(ifft);
     end
 
 end

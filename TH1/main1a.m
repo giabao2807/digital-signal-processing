@@ -1,12 +1,12 @@
 close all;
-for looping =1:8
+for looping =1:10
    clearvars -except looping;
    clc;
 % filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/';
 % files = { '01MDA','02FVA', '03MAB', '06FTB'};
 
-filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/TH1/TinHieuHuanLuyen/';
-files = { '01MDA','02FVA', '03MAB', '06FTB','45MDV','42FQT','44MTT','30FTN'};
+filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/TH1/TinHieuKiemThu/';
+files = { '04MHB','05MVB', '07FTC', '08MLD','09MPD','10MSD','12FTD','14FHH','16FTH','24FTL'};
 
 
 N=32068;
@@ -19,22 +19,6 @@ Tau = 0.37;
 Fslow=70;
 Fshigh=450;
 
-%0 si 1 speech
-
-
-% do something for draw line in result matlab
-
-% if (looping==1)
-%     standardVals=MDA;
-% elseif (looping==2)
-%     standardVals=FVA;
-% elseif (looping==3)
-%     standardVals=MAB;
-% elseif (looping==4)
-%     standardVals=FTB;
-% end;
-
-% do something for draw line in result matlab
 
     gender = 'error!!';
 
@@ -82,14 +66,6 @@ Fshigh=450;
             frame(lenX:b)=0;
         end
         
-%         ZCR computing
-%         zcr=0;
-%         for  i = 2:nSampleFrame
-%             if frame(i)*frame(i-1) <0
-%                 zcr=zcr+1;
-%             end
-%         end
-%         ZCRarr(frame_index)=zcr;
 
         %Autocorrect computing
         xxN=zeros(1,n_max-n_min+1);
@@ -144,7 +120,7 @@ Fshigh=450;
     %gender of signal
     if (F0mean >70 && F0mean <160)
         gender='male';
-    elseif (F0mean> 160 && F0mean <250)
+    elseif (F0mean> 160 && F0mean <300)
         gender ='female';
     else
         gender = 'no gender';
@@ -176,11 +152,6 @@ Fshigh=450;
     legend('Short-time energy', 'MA');
 
     subplot(3,1,2);plot(t1,x);
-    hold on;
-     for i=1:length(VUindex)
-            plot([1 1]*double(VUindex(i)), ylim, 'r','LineWidth', 2.3);
-     end
-     hold on;
     title('Speech Signal');
     xlabel('Time axis');
     ylabel('normalizedAmplitude');
@@ -191,6 +162,18 @@ Fshigh=450;
     title(['F0mean:', num2str(F0mean), ' F0std:', num2str(F0std), ' Gender:' ,gender]);
     xlabel('Time axis');
     ylabel('F0');
+    
+    if (looping ==1)
+        figure('Name','ACF');
+        uv1=x(floor(1.2*fs):floor(1.23*fs));
+        v1=x(floor(0.9*fs):floor(0.93*fs));
+        uv1=ACFfunction(uv1);
+        v1= ACFfunction(v1);
+        subplot(2,1,1); plot(uv1); xlabel('Sample'); ylabel('Autocorrect');title('Unvoice');
+        subplot(2,1,2); plot(v1); xlabel('Sample'); ylabel('Autocorrect');title('Voice');     
+    end
+    
+    
 end
     
     
