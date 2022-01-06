@@ -118,12 +118,10 @@ Fshigh=450;
     
     
     %gender of signal
-    if (F0mean >70 && F0mean <160)
+    if F0mean <160
         gender='male';
-    elseif (F0mean> 160 && F0mean <300)
-        gender ='female';
     else
-        gender = 'no gender';
+        gender ='female';
     end
     
     
