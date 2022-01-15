@@ -2,8 +2,6 @@ close all;
 for looping =1:2
    clearvars -except looping;
    clc;
-% filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/endcourse/TinHieuHuanLuyen/';
-% files = { '01MDA','02FVA', '03MAB', '06FTB'};
 
 filePath='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/TH2/NguyenAmHuanLuyen/';
 
@@ -132,6 +130,14 @@ Fshigh=450;
              VUindex=[0 VUindex];
          end
        
+         a=VUindex(1)*fs
+         b=VUindex(2)*fs
+         range = floor((b-a)/3);
+         xx=x(a+range:b-range);
+         
+        coeffs = mfcc(xx,fs); 
+        [L,M,N] = size(coeffs);
+        coeffs = mean(coeffs,1);
         
    
       
@@ -146,9 +152,9 @@ Fshigh=450;
     ylabel('normalizedAmplitude');
  
     
-    subplot(2,1,2);plot(t1,x);
-    
+    subplot(2,1,2);plot(xx);
     end
 end
+
     
     
