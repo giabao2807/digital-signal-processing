@@ -3,7 +3,10 @@ clc;
 close all;
 path='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/';
 files = dir('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/');
-for i=3:23   
+
+
+%trainning
+for i=3:4   
     p=strcat(path,files(i).name);
     p=strcat(p,'/');
     p1=strcat(p, '/*.wav');
@@ -14,5 +17,6 @@ for i=3:23
         [data,fs]= audioread(p2);
         index = i*j + j;
         program(data, fs, index, x);
+        
     end
 end

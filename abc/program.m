@@ -1,4 +1,6 @@
-function  program (data, fs, index, name) 
+function v= program (data, fs, index, name) 
+
+%cau1
 
 framelength = 0.02;
 fsample = round(framelength * fs); nframe = floor(length(data) / fsample);
@@ -37,6 +39,18 @@ for j = 2 : nframe - 1
     end
 end
 
+
+% ======================== Cau2 ==========================
+% 2a khung tin hieu co do on dinh
+a = vu(1)*fs;
+b = vu(2)*fs;
+range = floor((b-a)/3);
+newdata = data(a+range:b-range);
+
+
+%2b,c trich xuat dac trung mfcc va tbc
+v = mean(my_mfcc(newdata,fs,13))
+
 %ve do thi
 % figure('name', name);
 % t = 0 : 1/fs : (length(data)-1)/fs; 
@@ -52,11 +66,9 @@ end
 % subplot(2, 1, 2);title('Voiced && Silence');
 % plot(t, data);hold on;
 % ylabel('Bien do'); xlabel('Thoi gian(s)');
-for i = 1 : length(vu)
+%for i = 1 : length(vu)
 %    plot([1, 1] * vu(i), ylim, 'r--','LineWidth', 2);
-    vu(i);
-end
-
-fprintf("====");
+%   vu(i);
+%end
 
 %legend('Input', 'Output');
