@@ -19,8 +19,8 @@ if varargin=="visualize"
     pause;
 end
 
-Nfft = 256; % Frame Size
-noverlap = 156; % Overlap Between 
+Nfft = 0.03*fs; % Frame Size
+noverlap = 0.02*fs; % Overlap Between 
 
 
 % Now Compute the Spectrogram for the Signal
