@@ -3,20 +3,18 @@ function v = my_mfcc(x,fs,num_filters,varargin)
 % This function computes the Mel Frequency Cepstral Coefficients (MFCC) for
 % a given input Sound Track
 
-if varargin=="visualize"
+if varargin=="image"
     figure;
     plot((0:length(x)-1)*1/fs,x);
     title("Input Sound Track (Time Domain)");
     xlabel("Time \Rightarrow");
     ylabel("Amplitude");
-    pause;
     
     figure;
     plot(linspace(-fs/2,fs/2,length(x)),fftshift(abs(fft(x))));
     title("Spectrum of Input Sound Track");
     xlabel("Frequency \Rightarrrow");
     ylabel("Amplitude");
-    pause;
 end
 
 Nfft = 0.03*fs; % Frame Size
@@ -27,14 +25,12 @@ noverlap = 0.02*fs; % Overlap Between
 
 s = spectrogram(x,hamming(Nfft),noverlap,Nfft);
 
-if varargin=="visualize"
-    
+if varargin=="image"
     figure;
     spectrogram(x,hanning(Nfft),noverlap,Nfft);
     title("Normal Spectrogram using Short Time Fourier Transform");
     xlabel("Time \Rightarrow");
     ylabel("Frequency");
-    pause;
     
 end
 
@@ -46,15 +42,13 @@ s_power = (1/Nfft)*abs(s).^2;
 
 melfb = make_melFB(num_filters,fs,Nfft);
 
-if varargin == "visualize"
+if varargin == "image"
     
     figure;
     plot(linspace(0, (fs/2), Nfft/2+1), melfb');
     xlabel("Frequency \Rightarrow");
     ylabel("Gain");
-    title("Mel Filter Bank");
-    pause;
-    
+    title("Mel Filter Bank");   
 end
 
 % Apply Mel Filters to Power-Spectrum
