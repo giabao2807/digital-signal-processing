@@ -1,4 +1,4 @@
-function mfcc = my_mfcc(x,fs,num_filters,varargin)
+function v = my_mfcc(x,fs,num_filters,varargin)
 
 % This function computes the Mel Frequency Cepstral Coefficients (MFCC) for
 % a given input Sound Track
@@ -77,6 +77,16 @@ melSpectrum_coeff_log = log10(melScaled_s_power);
 mfcc_all = dct(melSpectrum_coeff_log);
 
 mfcc = mfcc_all(2:end,1:end);
+
+
+
+%
+v = zeros(1,num_filters-1);
+    for i=1:num_filters-1
+        v(i)=mean(mfcc(i,:));
+    end
+end
+
 
 
 % % Extracting the Relevant MFCC's

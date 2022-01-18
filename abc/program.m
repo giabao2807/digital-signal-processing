@@ -49,7 +49,9 @@ newdata = data(a+range:b-range);
 
 
 %2b,c trich xuat dac trung mfcc va tbc
-v = mean(my_mfcc(newdata,fs,13))
+v = my_mfcc(newdata,fs,13);
+
+%v2 = v_melcepst(newdata,fs,'E',13,floor((3*log)),0.03*fs,0.01*fs)
 
 %ve do thi
 % figure('name', name);
