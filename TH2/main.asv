@@ -3,15 +3,15 @@ clc;
 close all;
 path='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/';
 files = dir('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/');
-numfilter=26;
+numfilter=13;
 k=5;
 
 %trainnings
-a=zeros(21*k,numfilter-1);
-u=zeros(21*k,numfilter-1);
-e=zeros(21*k,numfilter-1);
-ii=zeros(21*k,numfilter-1);
-o=zeros(21*k,numfilter-1);
+a=zeros(21,numfilter-1);
+u=zeros(21,numfilter-1);
+e=zeros(21,numfilter-1);
+ii=zeros(21,numfilter-1);
+o=zeros(21,numfilter-1);
 
 
 for i=4:24
@@ -27,86 +27,26 @@ for i=4:24
         
         %Trich xuat vecto theo tung nguyen am
         if (j==1)
-            v=program(data, fs, index, x,numfilter,k);
-            for h=1:k
-                a((i-4)*k+h,:)=v(h,:);
-            end
-         elseif (j==2)
-            v=program(data, fs, index, x,numfilter,k);
-            for h=1:k
-                e((i-4)*k+h,:)=v(h,:);
-            end
-         elseif (j==3)
-            v=program(data, fs, index, x,numfilter,k);
-            for h=1:k
-                ii((i-4)*k+h,:)=v(h,:);
-            end
-         elseif (j==4)
-            v=program(data, fs, index, x,numfilter,k);
-            for h=1:k
-                o((i-4)*k+h,:)=v(h,:);
-            end
-         elseif (j==5)
-            v=program(data, fs, index, x,numfilter,k);
-            for h=1:k
-                u((i-4)*k+h,:)=v(h,:);
-            end
+            a(i-3,:)=program(data, fs, index, x,numfilter);
+        elseif (j==2)
+            e(i-3,:)=program(data, fs, index, x,numfilter);
+        elseif (j==3)
+            ii(i-3,:)=program(data, fs, index, x,numfilter);
+        elseif (j==4)
+            o(i-3,:)=program(data, fs, index, x,numfilter);
+        elseif (j==5)
+            u(i-3,:)=program(data, fs, index, x,numfilter);
         end 
     end
 end
 
+%TBC cac vecto
+[[ind,mean_a=kmeans(a,k);
+mean_e=kmeans(e,k);
+mean_ii=kmeans(ii,k);
+mean_o= kmeans(o,k);
+mean_u= kmeans(u,k);
 
-
-
-%TBC cac vecto=
-tmp = zeros(21,numfilter-1);
-mean_a = zeros(k,numfilter-1);
-for i=1:k
-    for j=1:21
-       indx = k*(j-1)+i;
-       tmp(j,:)=a(indx,:);
-    end
-    mean_a(i,:)=mean(tmp);
-end
-
-
-mean_e = zeros(k,numfilter-1);
-for i=1:k
-    for j=1:21
-       indx = k*(j-1)+i;
-       tmp(j,:)=e(indx,:);
-    end
-    mean_e(i,:)=mean(tmp);
-end
-
-mean_ii = zeros(k,numfilter-1);
-for i=1:k
-    for j=1:21
-       indx = k*(j-1)+i;
-       tmp(j,:)=ii(indx,:);
-    end
-    mean_ii(i,:)=mean(tmp);
-end
-
-mean_o = zeros(k,numfilter-1);
-for i=1:k
-    for j=1:21
-       indx = k*(j-1)+i;
-       tmp(j,:)=o(indx,:);
-    end
-    mean_o(i,:)=mean(tmp);
-end
-
-mean_u = zeros(k,numfilter-1);
-for i=1:k
-    for j=1:21
-       indx = k*(j-1)+i;
-       tmp(j,:)=u(indx,:);
-    end
-    mean_u(i,:)=mean(tmp);
-end
-
- 
 
 % %testing
 % %Cau 3 so khop va xuat ket qua
@@ -142,7 +82,7 @@ for i=4:24
         x = files(i).name + "/" + files1(j).name;
         p2=strcat(p,files1(j).name);
         [data,fs]= audioread(p2);
-        vecto =program(data, fs, index, x,numfilter,1);
+        vecto =program(data, fs, index, x,numfilter);
         index= sokhop(files1(j).name ,vecto,mang,k);
         result(j, index) = result(j, index) + 1;
         if(j ~= index) wrong_result = wrong_result + 1;
