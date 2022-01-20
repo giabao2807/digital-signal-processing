@@ -5,19 +5,19 @@ function [check_result] = sokhop(name, data, origin,k)
            result(i) =sqrt(sum((data-origin(i,:)).^2)); 
     end
     for j =1:k
-        if(min(result) == result(j))
+        if(min(result) == result((i-1)*k+j)||i==1)
             check_result = 1;
         end
-        if (min(result) == result(k+j))
+        if (min(result) == result((i-1)*k+j))
             check_result = 2;
         end
-        if (min(result) == result(2*k+j))
+        if (min(result) == result((i-1)*k+j))
             check_result = 3;
         end
-        if (min(result) == result(3*k+j))
+        if (min(result) == result((i-1)*k+j))
              check_result = 4;
         end
-        if (min(result) == result(4*k+j))
+        if (min(result) == result((i-1)*k+j))
             check_result = 5;
         end
     end

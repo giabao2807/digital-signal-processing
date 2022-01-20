@@ -4,7 +4,7 @@ close all;
 path='/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/';
 files = dir('/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/');
 numfilter=26;
-k=3;
+k=7;
 
 %trainnings
 a=zeros(21*k,numfilter-1);
@@ -68,7 +68,6 @@ for i=1:k
     end
     mean_a(i,:)=mean(tmp);
 end
-
 
 mean_e = zeros(k,numfilter-1);
 for i=1:k
@@ -151,10 +150,10 @@ for i=4:24
 end
 
 nhan = {'a';'e';'i';'o';'u'};
-rs_a = result(:,1);
-rs_e =  result(:,2);
-rs_i =  result(:,3);
-rs_o =  result(:,4);
-rs_u =  result(:,5);
-T = table(nhan,rs_a,rs_e,rs_i,rs_o,rs_u)
+a = result(:,1);
+e =  result(:,2);
+i =  result(:,3);
+o =  result(:,4);
+u =  result(:,5);
+T = table(nhan,a,e,i,o,u)
 Dochinhxac = (105 - wrong_result) * 100 / 105

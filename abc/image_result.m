@@ -75,6 +75,6 @@ newdata = data(a+range:b-range);
 
 
 %2b,c trich xuat dac trung mfcc va tbc
-v = my_mfcc(newdata,fs,numfilter,'image');
+v = my_mfcc(newdata,fs,numfilter,'image')
 
 end

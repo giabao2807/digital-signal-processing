@@ -1,24 +1,23 @@
-function v = my_mfcc(x,fs,num_filters,varargin)
+function V = my_mfcc(x,fs,num_filters,varargin,k)
 
 % This function computes the Mel Frequency Cepstral Coefficients (MFCC) for
 % a given input Sound Track
-
 if varargin=="image"
     figure;
     plot((0:length(x)-1)*1/fs,x);
     title("Input Sound Track (Time Domain)");
-    xlabel("Time \Rightarrow");
+    xlabel("Time ");
     ylabel("Amplitude");
     
     figure;
     plot(linspace(-fs/2,fs/2,length(x)),fftshift(abs(fft(x))));
     title("Spectrum of Input Sound Track");
-    xlabel("Frequency \Rightarrrow");
+    xlabel("Frequency ");
     ylabel("Amplitude");
 end
 
 Nfft = 0.03*fs; % Frame Size
-noverlap = 0.02*fs; % Overlap Between 
+noverlap = 0.01*fs; % Overlap Between 
 
 
 % Now Compute the Spectrogram for the Signal
@@ -29,7 +28,7 @@ if varargin=="image"
     figure;
     spectrogram(x,hanning(Nfft),noverlap,Nfft);
     title("Normal Spectrogram using Short Time Fourier Transform");
-    xlabel("Time \Rightarrow");
+    xlabel("Time");
     ylabel("Frequency");
     
 end
@@ -46,7 +45,7 @@ if varargin == "image"
     
     figure;
     plot(linspace(0, (fs/2), Nfft/2+1), melfb');
-    xlabel("Frequency \Rightarrow");
+    xlabel("Frequency ");
     ylabel("Gain");
     title("Mel Filter Bank");   
 end
@@ -72,14 +71,28 @@ mfcc_all = dct(melSpectrum_coeff_log);
 
 mfcc = mfcc_all(2:end,1:end);
 
+[row,column]=size(mfcc);
 
-
-%
-v = zeros(1,num_filters-1);
-    for i=1:num_filters-1
-        v(i)=mean(mfcc(i,:));
+%chuyen vi de giong thu vien
+chuyenvi = zeros(column, row);
+    for i = 1: column
+        for j = 1: row
+            chuyenvi(i,j) = mfcc(j,i);
+        end
     end
+
+ [indx,V]=kmeans(chuyenvi,k);
+ 
+ if (k==1)
+     V = zeros(1,num_filters-1);
+    for i=1:num_filters-1
+        V(i)=mean(mfcc(i,:));
+    end
+ end
+ 
 end
+
+
 
 
 
