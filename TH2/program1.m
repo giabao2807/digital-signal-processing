@@ -1,4 +1,4 @@
-function v= program (data, fs, index, name,numfilter) 
+function z = program (data, fs, index, name,numfilter) 
 
 %cau1
 
@@ -44,14 +44,34 @@ end
 % 2a khung tin hieu co do on dinh
 a = vu(1)*fs;
 b = vu(2)*fs;
-range = floor((b-a)/6);
+range = floor((b-a)/3);
 newdata = data(a+range:b-range);
 
 
 %2b,c trich xuat dac trung mfcc va tbc
-v = my_mfcc(newdata,fs,numfilter);
+z = my_fft(newdata, fs);
 
-%using matlab library
-v1 = v_melcepst(newdata, fs, 'E', numfilter-2, floor(3*log(fs)), 0.03*fs, 0.01*fs);
-v1=mean(v1);
 
+%v2 = v_melcepst(newdata,fs,'E',13,floor((3*log)),0.03*fs,0.01*fs)
+
+%ve do thi
+%figure('name', name);
+%t = 0 : 1/fs : (length(data)-1)/fs; 
+%t1 = (0 : (nframe - 1)) * 0.02;
+% 
+%subplot(2,1,1);title('STE & MA');
+%plot(t,data); hold on;
+%plot(t1,ste,'r-','LineWidth',2); hold on;
+%plot(t1,ma,'g-','LineWidth',2);
+%ylabel('Bien do'); xlabel('Thoi gian(s)');
+%legend('STE', 'MA');
+% 
+%subplot(2, 1, 2);title('Voiced && Silence');
+%plot(t, data);hold on;
+%ylabel('Bien do'); xlabel('Thoi gian(s)');
+%for i = 1 : length(vu)
+   %plot([1, 1] * vu(i), ylim, 'r--','LineWidth', 2);
+   %vu(i);
+%end
+
+%legend('Input', 'Output');

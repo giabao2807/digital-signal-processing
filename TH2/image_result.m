@@ -43,6 +43,14 @@ for j = 2 : nframe - 1
     end
 end
 
+
+% ======================== Cau2 ==========================
+% 2a khung tin hieu co do on dinh
+a = vu(1)*fs;
+b = vu(2)*fs;
+range = floor((b-a)/6);
+newdata = data(a+range:b-range);
+
 %ve do thi cau 1
  figure('name', 'Speech and Silence');
  t = 0 : 1/fs : (length(data)-1)/fs; 
@@ -60,21 +68,14 @@ end
  ylabel('Bien do'); xlabel('Thoi gian(s)');
 for i = 1 : length(vu)
     plot([1, 1] * vu(i), ylim, 'r--','LineWidth', 2);
-   vu(i);
 end
+hold on;
+plot([1, 1] * ((a+range)/fs), ylim, 'g--','LineWidth', 2);
+plot([1, 1] * ((b-range)/fs), ylim, 'g--','LineWidth', 2);
 
-legend('Input', 'Output');
-
-
-% ======================== Cau2 ==========================
-% 2a khung tin hieu co do on dinh
-a = vu(1)*fs;
-b = vu(2)*fs;
-range = floor((b-a)/3);
-newdata = data(a+range:b-range);
+legend('Input', 'Speech');
 
 
 %2b,c trich xuat dac trung mfcc va tbc
-v = my_mfcc(newdata,fs,numfilter,'image');
-
+v = my_mfcc(newdata,fs,numfilter-2,'image');
 end

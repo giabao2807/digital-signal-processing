@@ -19,12 +19,12 @@ end
 
 Nwindow = 0.03*fs; % Frame Size
 noverlap = 0.01*fs; % Overlap Between 
-Nfft = Nwindow;
+Nfft = 256;
 
 
 % Now Compute the Spectrogram for the Signal
 
-s = spectrogram(x,hamming(Nwindow),noverlap,Nfft);
+s = spectrogram(x,hamming(Nwindow),noverlap,Nw);
 
 if varargin=="image"
     figure;
