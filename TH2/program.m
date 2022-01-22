@@ -44,7 +44,7 @@ end
 % 2a khung tin hieu co do on dinh
 a = vu(1)*fs;
 b = vu(2)*fs;
-range = floor((b-a)/6);
+range = floor((b-a)/3);
 newdata = data(a+range:b-range);
 
 

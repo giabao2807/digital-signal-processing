@@ -2,6 +2,7 @@ tic
 clear;
 clc;
 close all;
+image_result;
 max_accuracy = 0;
 accuracy = zeros(3, 5);
 
@@ -165,6 +166,7 @@ max_accuracy
 
 
 f3 = figure('Name', 'Nhan dang','Position',[200 200 460 500]);
+% title(['N= ',max_N, 'K= ',max_K, ' max_ĐCX= ', max_accuracy]);
 cnames = {'a','e','i','o', 'u'};
 nameFile = {'23MTL   ','24FTL   ','25MLM','27MCM','28MVN ','29MHN','30FTN   ','32MTP ','33MHP','34MQP','35MMQ','36MAQ','37MDS','38MDS','39MTS','40MHS','41MVS','42FQT','43MNT','44MTT','45MDV'};
 for iidx=1: length(nameFile) 

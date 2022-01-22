@@ -1,8 +1,7 @@
 function image_result()
-close all;
 path = '/Users/dinhgiabao/Desktop/HK1-nam3/XLTinHieu/abc/NguyenAmHuanLuyen/01MDA/e.wav';
 [data,fs]= audioread(path);
-numfilter =26;
+numfilter =13;
     
     
     

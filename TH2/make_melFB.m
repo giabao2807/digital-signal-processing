@@ -7,10 +7,12 @@ f_start = 300; % Start Frequency
 f_stop = 7000; % Stop Frequency
 g = 1; % Highest Gain of Mel Filters
 
+%Convert HZ to Mel
 f_temp_mel = convert2mel([f_start,f_stop]);
 
 f_mel = linspace(f_temp_mel(1),f_temp_mel(2),num_filters+2); % Equi-Spaced Mel Frequency array
 
+%Convert Mel to Hz
 f_array = convert2f(f_mel); % Convert to Corresponding Normal Frequencies
 
 f_approx_sample_array = floor(f_array*(floor(N/2)+1)/fs); % Approximating into available FFT bins
